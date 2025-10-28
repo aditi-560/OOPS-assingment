@@ -42,6 +42,22 @@ public class Main {
             record.displayRecord();
         }
 
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(student1);
+        students.add(student2);
+
+        ArrayList<Course> courses = new ArrayList<>();
+        courses.add(course1);
+
+        ArrayList<AttendanceRecord> records = new ArrayList<>();
+        records.add(record1);
+        records.add(record2);
+
+        FileStorageService fileStorageService = new FileStorageService();
+        fileStorageService.saveData(students, "students.txt");
+        fileStorageService.saveData(courses, "courses.txt");
+        fileStorageService.saveData(records, "attendance_log.txt");
+
         System.out.println("\nSession 5: Inheritance Hierarchy Established Complete.");
     }
 }

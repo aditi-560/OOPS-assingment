@@ -60,3 +60,19 @@ This is a 10-part code-along project to build a console-based school attendance 
 1. Navigate to the project root directory.
 2. Compile: `javac src/com/school/*.java`
 3. Run: `java -cp src com.school.Main`
+
+## Part 6: Data Storage Implementation
+- Created `Storable` interface with `toDataString()` to represent data string serialization for saving.
+- Implemented `Storable` in `Student`, `Course`, and `AttendanceRecord` with specific data string formats.
+- Created `FileStorageService` class with `saveData` method to save lists of `Storable` items to files.
+- Updated `Main.java` to demonstrate data saving in action.
+- Students, Courses, and Attendance Records are saved to `students.txt`, `courses.txt`, and `attendance_log.txt` respectively.
+
+### How to Run and Check Output Files
+1. Navigate to the project root directory.
+2. Compile: `javac src/com/school/*.java`
+3. Run: `java -cp src com.school.Main`
+4. Check the output files in the project directory:
+   - `students.txt`: Contains serialized student data.
+   - `courses.txt`: Contains serialized course data.
+   - `attendance_log.txt`: Contains serialized attendance records.
