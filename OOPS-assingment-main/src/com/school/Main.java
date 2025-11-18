@@ -45,25 +45,36 @@ public class Main {
         System.out.println("\n\n--- Available Courses ---");
         for(Course c : courses) c.displayDetails();
 
+        // --- Create FileStorageService and AttendanceService instances ---
+        FileStorageService storageService = new FileStorageService();
+        AttendanceService attendanceService = new AttendanceService(storageService);
 
-        // --- Attendance Recording (Using Student and Course objects) ---
-        List<AttendanceRecord> attendanceLog = new ArrayList<>();
-        attendanceLog.add(new AttendanceRecord(student1, course1, "Present"));
-        attendanceLog.add(new AttendanceRecord(student2, course1, "Absent"));
-        attendanceLog.add(new AttendanceRecord(student1, course2, "Daydreaming")); // Invalid status
+        // --- Create lists of Student objects (allStudents) and Course objects (allCourses) ---
+        List<Student> allStudents = new ArrayList<>();
+        allStudents.add(student1);
+        allStudents.add(student2);
+        
+        List<Course> allCourses = new ArrayList<>();
+        allCourses.add(course1);
+        allCourses.add(course2);
 
-        System.out.println("\n\n--- Attendance Log ---");
-        if (attendanceLog.isEmpty()){
-            System.out.println("No attendance records yet.");
-        } else {
-            for (AttendanceRecord ar : attendanceLog) {
-                ar.displayRecord(); // displayRecord now uses Student/Course objects
-            }
-        }
+        // --- Call the different overloaded versions of attendanceService.markAttendance(...) ---
+        // Using Student and Course objects directly
+        attendanceService.markAttendance(student1, course1, "Present");
+        attendanceService.markAttendance(student2, course1, "Absent");
+        attendanceService.markAttendance(student1, course2, "Daydreaming"); // Invalid status
+        
+        // Using studentId and courseId with lookup
+        attendanceService.markAttendance(student1.getId(), course1.getCourseId(), "Present", allStudents, allCourses);
+        attendanceService.markAttendance(student2.getId(), course2.getCourseId(), "Absent", allStudents, allCourses);
+
+        // --- Call the different overloaded versions of attendanceService.displayAttendanceLog(...) ---
+        attendanceService.displayAttendanceLog(); // Display all records
+        attendanceService.displayAttendanceLog(student1); // Display records for student1
+        attendanceService.displayAttendanceLog(course1); // Display records for course1
 
         // --- Saving Data (Storable interface still uses IDs for simplicity) ---
         System.out.println("\n\n--- Saving Data to Files ---");
-        FileStorageService storageService = new FileStorageService();
         // We need to convert List<Person> to List<Student> or handle saving different person types.
         // For simplicity, let's save only students from the schoolPeople list if they are students.
         List<Student> studentsToSave = new ArrayList<>();
@@ -79,7 +90,9 @@ public class Main {
         }
 
         storageService.saveData(courses, "courses.txt");
-        storageService.saveData(attendanceLog, "attendance_log.txt");
+        
+        // --- Call attendanceService.saveAttendanceData() at the end ---
+        attendanceService.saveAttendanceData();
 
         System.out.println("\nSession 7: Polymorphic Behaviour Demonstrated Complete.");
     }
